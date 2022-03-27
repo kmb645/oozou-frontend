@@ -14,34 +14,6 @@ function Home() {
 
   }, [])
   
-  /* Form Validation for Yup & Formik */
-  const initialValues = {
-      title: '',
-      status: 'pending'
-  }
-
-  /* Todo List Insert Method */
-  const onSubmit = (data, { resetForm }) => {     
-       axios.post(`${baseUrl}/todos`,data).then( (response)=> {
-        setListOfTodos([...listOfTodos,response.data])
-          resetForm();
-      })
-  }
-
- /* Subtasks Insert Method */
-  const onSubmitStep = (data, { resetForm }) => {
-     axios.post(`${baseUrl}/subtasks`,data).then( (response)=> {
-        setListOfTodos(listOfTodos.map((todos) => {
-          if(todos.id === response.data.TodoId){
-            return {...todos, Subtasks: [...todos.Subtasks,response.data]}
-          }else{
-            return todos
-          }
-        }))
-        resetForm()
-      })
-  }
-
   /* Todo status Update from here */
  const  todoStatusChange = (id,status) => {
     const statusObj = {id: id, status: status}
@@ -79,7 +51,7 @@ return <div className='createPostPage'>
   <Container>
       <Row className="justify-content-md-center"> 
       <Col md="auto">
-      <AddItem initialValue={{...initialValues}} onSubmit={onSubmit} />
+      <AddItem />
       <Accordion defaultActiveKey="0">
           {listOfTodos.map((value,index) => {   
             /* total Step and Selected Count */
